@@ -1,19 +1,19 @@
-import requests
 from telegram.ext import Updater, CommandHandler
 import telebot
 import pandas as pd
 from bs4 import BeautifulSoup as bs
-import requests
 import pandas as pd
 from unidecode import unidecode
-import re
 from tabulate import tabulate
 import difflib
 import time
 from datetime import datetime
 import scrapping_programacao as sp
+import os
 
-with open('Last_modification.txt', 'r') as f:
+cwd = os.getcwd()
+
+with open(cwd+'\\'+'Last_modification.txt', 'r') as f:
     if f.read() != str(datetime.today().date()):
         print('Base de dados desatualizada.')
         print('Atualizando:')
@@ -54,7 +54,7 @@ def format_table(DF):
 
 
 id = '1790463787'
-A = pd.read_excel('teste.xlsx', index_col=0)
+A = pd.read_excel(cwd+'\\'+'teste.xlsx', index_col=0)
 bot = telebot.TeleBot('6507938494:AAHABkuPOSweeatRqan2Iag19OHoHJseKQU')
 
 A['Programa'][A['Canal'] == 'SporTV 2'].unique()
