@@ -13,10 +13,11 @@ import time
 from datetime import datetime
 import scrapping_programacao as sp
 
-with open('Last_modification.txt','r') as f:
+with open('Last_modification.txt', 'r') as f:
     if f.read() != str(datetime.today().date()):
+        print('Base de dados desatualizada.')
+        print('Atualizando:')
         sp.macro()
-
 
 
 def encontrar_string_proxima(string_procurada, df_column, grau_proximidade=0.6):
@@ -196,4 +197,5 @@ Se deseja saber o cronograma de um canal específico digite /cronograma_canal
     bot.send_message(message.chat.id, msg)
 
 
+print('Tudo Perfeito ! Rodando !')
 bot.polling()
