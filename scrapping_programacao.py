@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 import pandas as pd
 from unidecode import unidecode
+from datetime import datetime
 
 
 def programacao(url, canal):
@@ -98,3 +99,6 @@ if __name__ == '__main__':
                        axis=0, ignore_index=True)
 
     DF.to_excel('teste.xlsx')
+
+    with open('Last_modification.txt', 'w') as f:
+        f.write(str(datetime.today().date()))

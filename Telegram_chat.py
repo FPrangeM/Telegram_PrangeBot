@@ -13,7 +13,10 @@ import time
 from datetime import datetime
 import scrapping_programacao as sp
 
-sp.macro()
+with open('Last_modification.txt','r') as f:
+    if f.read() != str(datetime.today().date()):
+        sp.macro()
+
 
 
 def encontrar_string_proxima(string_procurada, df_column, grau_proximidade=0.6):
