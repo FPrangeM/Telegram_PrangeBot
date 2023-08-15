@@ -11,9 +11,10 @@ from datetime import datetime
 import scrapping_programacao as sp
 import os
 
-cwd = os.getcwd()
 
-with open(cwd+'\\'+'Last_modification.txt', 'r') as f:
+file_path = os.path.join(os.getcwd(), 'Last_modification.txt')
+
+with open(file_path, 'r') as f:
     if f.read() != str(datetime.today().date()):
         print('Base de dados desatualizada.')
         print('Atualizando:')
@@ -54,7 +55,9 @@ def format_table(DF):
 
 
 id = '1790463787'
-A = pd.read_excel(cwd+'\\'+'teste.xlsx', index_col=0)
+file_path = file_path = os.path.join(os.getcwd(), 'teste.xlsx')
+
+A = pd.read_excel(file_path, index_col=0)
 bot = telebot.TeleBot('6507938494:AAHABkuPOSweeatRqan2Iag19OHoHJseKQU')
 
 A['Programa'][A['Canal'] == 'SporTV 2'].unique()
