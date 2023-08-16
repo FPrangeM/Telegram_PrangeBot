@@ -45,7 +45,7 @@ def format_table(DF):
     headers = 'keys'        # Exibir cabeçalhos
     showindex = False       # Não exibir o índice das linhas
     # Alinhar a primeira coluna à esquerda, as outras à direita
-    colalign = ['left', 'right', 'right']
+    colalign = ['left', 'right']
     numalign = 'right'      # Alinhar números à direita
     stralign = 'left'       # Alinhar strings à esquerda
     # Gerar a tabela formatada
@@ -110,11 +110,11 @@ def check_dia(message):
 def cronograma_canal_dia_select(message):
     print(filtro_canal, filtro_dia)
 
-    msg = f"""Ótimo, já vou te buscar as correspondencias """
+    msg = f"""Ótimo, já vou te buscar as correspondencias do canal {filtro_canal} no dia {filtro_dia} """
     bot.send_message(message.chat.id, msg)
     a = A[(A['Canal_tag'] == filtro_canal) & (
         A['Dia_tag'] == filtro_dia)]
-    a = a.drop(['Categoria', 'Canal_tag', 'Dia_tag'], axis=1)
+    a = a.drop(['Categoria', 'Canal_tag', 'Dia_tag','Dia','Canal'], axis=1)
     p = 15
     print(len(a))
     time.sleep(2)
@@ -193,7 +193,8 @@ def busca_cronograma(message):
 # Resto
 @bot.message_handler(func=lambda m: True)
 def geral(message):
-    msg = """Perfeito, vamos lá !!!
+    f_name=message.from_user.first_name
+    msg = f"""Perfeito, vamos lá {f_name} !!!
 Se deseja saber a programação de um programa específico digite /cronograma_programa
 Se deseja saber o cronograma de um canal específico digite /cronograma_canal
 """
