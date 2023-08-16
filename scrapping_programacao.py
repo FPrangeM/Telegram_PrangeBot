@@ -75,30 +75,10 @@ def macro():
                        axis=0, ignore_index=True)
 
     DF.to_excel('teste.xlsx')
+    with open('Last_modification.txt', 'w') as f:
+        f.write(str(datetime.today().date()))
     print('base atualizada')
 
 
 if __name__ == '__main__':
-
-    DF = pd.DataFrame(
-        columns=['Programa', 'Categoria', 'Horario', 'Dia', 'Canal'])
-
-    url = 'https://meuguia.tv/programacao/categoria/Esportes'
-    req = requests.get(url)
-    soup = bs(req.content, 'html.parser')
-    box = soup.find('ul')
-    canais = box.find_all('a', {'class': 'devicepadding'})
-
-    for c in canais:
-
-        sufixo = c['href']
-        url = 'https://meuguia.tv'+sufixo
-        canal = c.h2.text
-        print(canal)
-        DF = pd.concat([DF, programacao(url, canal)],
-                       axis=0, ignore_index=True)
-
-    DF.to_excel('teste.xlsx')
-
-    with open('Last_modification.txt', 'w') as f:
-        f.write(str(datetime.today().date()))
+    macro()
