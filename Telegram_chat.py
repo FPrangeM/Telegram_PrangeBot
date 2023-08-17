@@ -41,13 +41,17 @@ def download_musica(message):
 
     print(nome, url)
 
-    yt = YouTube(url)
-    video = yt.streams.filter(only_audio=True).first()
-    video.download(output_path=f'Musicas', filename=nome+'.mp3')
-    msg = 'Musica baixada, aguarde enquanto faço o upload...'
-    bot.send_message(message.chat.id, msg)
-    bot.send_audio(message.chat.id, audio=open(os.path.join('Musicas',f'{nome}.mp3'), 'rb'))
-
+    try:
+        yt = YouTube(url)
+        video = yt.streams.filter(only_audio=True).first()
+        video.download(output_path=f'Musicas', filename=nome+'.mp3')
+        msg = 'Musica baixada, aguarde enquanto faço o upload...'
+        bot.send_message(message.chat.id, msg)
+        bot.send_audio(message.chat.id, audio=open(os.path.join('Musicas',f'{nome}.mp3'), 'rb'))
+    except:
+        msg = 'infelizmente não deu certo... Por favor tente novamente'
+        print(msg)
+        bot.send_message(message.chat.id, msg)
 
 def check_banda(message):
     m = message.text.lower()
