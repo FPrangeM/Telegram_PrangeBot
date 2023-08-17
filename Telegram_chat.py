@@ -51,7 +51,7 @@ def download_musica(message):
         bot.send_audio(message.chat.id, audio=open(file_path, 'rb'))
         os.remove(file_path)
     except:
-        msg = 'infelizmente não deu certo... Por favor tente novamente'
+        msg = 'infelizmente não deu certo... Por favor tente outra musica'
         print(msg)
         bot.send_message(message.chat.id, msg)
 
