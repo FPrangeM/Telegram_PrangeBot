@@ -47,11 +47,14 @@ def download_musica(message):
         video.download(output_path=f'Musicas', filename=nome+'.mp3')
         msg = 'Musica baixada, aguarde enquanto faço o upload...'
         bot.send_message(message.chat.id, msg)
-        bot.send_audio(message.chat.id, audio=open(os.path.join('Musicas',f'{nome}.mp3'), 'rb'))
+        file_path = os.path.join('Musicas', f'{nome}.mp3')
+        bot.send_audio(message.chat.id, audio=open(file_path, 'rb'))
+        os.remove(file_path)
     except:
         msg = 'infelizmente não deu certo... Por favor tente novamente'
         print(msg)
         bot.send_message(message.chat.id, msg)
+
 
 def check_banda(message):
     m = message.text.lower()
