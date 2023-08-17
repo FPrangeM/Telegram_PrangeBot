@@ -65,22 +65,26 @@ def check_banda(message):
 @bot.message_handler(func=check_banda)
 def download_banda(message):
     n = message.text.split("=")[-1].strip()
-    nome_banda, top_tracks = get_top_tracks(n)
-    msg = f"""Ótimo, já vou te buscar as correspondencias de "{nome_banda}" """
-    bot.send_message(message.chat.id, msg)
+    try:
+        nome_banda, top_tracks = get_top_tracks(n)
+        msg = f"""Ótimo, já vou te buscar as correspondencias de "{nome_banda}" """
+        bot.send_message(message.chat.id, msg)
 
-    print(message.from_user.first_name)
-    print(n)
-    B = pd.DataFrame(top_tracks, columns=('name', 'url'))
-    B['name_tag'] = column_to_tag(B['name'])
+        print(message.from_user.first_name)
+        print(n)
+        B = pd.DataFrame(top_tracks, columns=('name', 'url'))
+        B['name_tag'] = column_to_tag(B['name'])
 
-    globals()['tracks'] = B
-    globals()['filtro_musicas'] = tracks['name_tag'].unique()
-    msg = ''
-    for b in B['name_tag']:
-        msg += b+'\n'
-    bot.send_message(
-        message.chat.id, 'clique em qual musica gostaria de fazer o download:\n'+msg)
+        globals()['tracks'] = B
+        globals()['filtro_musicas'] = tracks['name_tag'].unique()
+        msg = ''
+        for b in B['name_tag']:
+            msg += b+'\n'
+        bot.send_message(
+            message.chat.id, 'clique em qual musica gostaria de fazer o download:\n'+msg)
+    except:
+        msg = 'Infelizmente não encontrei essa banda, por favor pesquise outra'
+        bot.send_message(message.chat.id, msg)
 
 
 @bot.message_handler(commands=['download_banda'])
