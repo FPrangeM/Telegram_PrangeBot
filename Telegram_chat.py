@@ -15,9 +15,9 @@ import scrapping_programacao as sp
 from last import get_top_tracks
 
 
-tracks=''
-filtro_musicas=''
-filtro_banda=''
+tracks = ''
+filtro_musicas = ''
+filtro_banda = ''
 
 id = '1790463787'
 file_path = file_path = os.path.join(os.getcwd(), 'teste.xlsx')
@@ -26,49 +26,49 @@ A = pd.read_excel(file_path, index_col=0)
 bot = telebot.TeleBot('6507938494:AAHABkuPOSweeatRqan2Iag19OHoHJseKQU')
 
 
-
 def check_musica(message):
     if message.text in filtro_musicas:
         return True
 
+
 @bot.message_handler(func=check_musica)
 def download_musica(message):
 
-    b = tracks[tracks['name_tag']==message.text]
-
+    b = tracks[tracks['name_tag'] == message.text]
 
     nome = b.iloc[0]['name']
     url = b.iloc[0]['url']
 
-    print(nome,url)
+    print(nome, url)
 
     yt = YouTube(url)
     video = yt.streams.filter(only_audio=True).first()
-    video.download(output_path=f'Musicas',filename=nome+'.mp3')
-    msg='Musica baixada, aguarde enquanto faço o upload...'
+    video.download(output_path=f'Musicas', filename=nome+'.mp3')
+    msg = 'Musica baixada, aguarde enquanto faço o upload...'
     bot.send_message(message.chat.id, msg)
-    bot.send_audio(message.chat.id,audio=open(f'Musicas\{nome}.mp3','rb'))
+    bot.send_audio(message.chat.id, audio=open(f'Musicas\{nome}.mp3', 'rb'))
 
 
 def check_banda(message):
     m = message.text.lower()
     if 'banda' in m and '=' in m:
         return True
-    
+
+
 @bot.message_handler(func=check_banda)
 def download_banda(message):
     n = message.text.split("=")[-1].strip()
-    nome_banda,top_tracks=get_top_tracks(n)
+    nome_banda, top_tracks = get_top_tracks(n)
     msg = f"""Ótimo, já vou te buscar as correspondencias de "{nome_banda}" """
     bot.send_message(message.chat.id, msg)
-    
+
     print(message.from_user.first_name)
     print(n)
-    B=pd.DataFrame(top_tracks,columns=('name','url'))
-    B['name_tag']=column_to_tag(B['name'])
+    B = pd.DataFrame(top_tracks, columns=('name', 'url'))
+    B['name_tag'] = column_to_tag(B['name'])
 
-    globals() ['tracks'] = B
-    globals() ['filtro_musicas'] = tracks['name_tag'].unique()
+    globals()['tracks'] = B
+    globals()['filtro_musicas'] = tracks['name_tag'].unique()
     msg = ''
     for b in B['name_tag']:
         msg += b+'\n'
@@ -82,10 +82,6 @@ def download_banda(message):
 Para isso, digite o nome da banda no formato a seguir, como por exemplo: 'banda=ACDC'
 '''
     bot.send_message(message.chat.id, msg)
-
-
-
-
 
 
 file_path = os.path.join(os.getcwd(), 'Last_modification.txt')
@@ -113,7 +109,7 @@ def column_to_tag(column):
     new = ['',
            '_']
     for o, n in zip(orig, new):
-        column = column.str.replace(o, n,regex=True)
+        column = column.str.replace(o, n, regex=True)
     column = column.apply(lambda m: '/' + unidecode(m))
     return column
 
@@ -121,6 +117,7 @@ def column_to_tag(column):
 A['Programa'][A['Canal'] == 'SporTV 2'].unique()
 A['Canal_tag'] = column_to_tag(A['Canal'])
 A['Dia_tag'] = column_to_tag(A['Dia'])
+
 
 def format_table(DF):
     tablefmt = 'simple'       # Usar um formato de grade para exibir as linhas horizontais
@@ -134,7 +131,6 @@ def format_table(DF):
     table = tabulate(DF, headers=headers, showindex=showindex, colalign=colalign,
                      numalign=numalign, stralign=stralign, tablefmt=tablefmt)
     return table
-
 
 
 filtro_canal = filtro_dia = ''
@@ -185,7 +181,7 @@ def cronograma_canal_dia_select(message):
     bot.send_message(message.chat.id, msg)
     a = A[(A['Canal_tag'] == filtro_canal) & (
         A['Dia_tag'] == filtro_dia)]
-    a = a.drop(['Categoria', 'Canal_tag', 'Dia_tag','Dia','Canal'], axis=1)
+    a = a.drop(['Categoria', 'Canal_tag', 'Dia_tag', 'Dia', 'Canal'], axis=1)
     p = 15
     print(message.from_user.first_name)
     print(filtro_canal, filtro_dia)
@@ -195,7 +191,6 @@ def cronograma_canal_dia_select(message):
         table = format_table(a[i:i+p])
         bot.send_message(message.chat.id, table)
         time.sleep(2)
-    
 
 
 # Resto
@@ -271,14 +266,14 @@ def busca_cronograma(message):
 # Resto
 @bot.message_handler(func=lambda m: True)
 def geral(message):
-    f_name=message.from_user.first_name
+    f_name = message.from_user.first_name
 #     msg = f"""Perfeito, vamos lá {f_name} !!!
 # 1) Se deseja saber a programação de um programa específico clique em /cronograma_programa
 # 2) Se deseja saber o cronograma de um canal específico clique em /cronograma_canal
 # 3) Se deseja baixar algumas musicas de uma banda clique em /download_banda
 # """
 
-    msg="""Perfeito, vamos lá Nathália !!!
+    msg = f"""Perfeito, vamos lá {message.from_user.first_name} !!!
 
 Programação de canais de esportes:
 
