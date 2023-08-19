@@ -289,8 +289,9 @@ def Rodar_bot():
 
 
 if __name__ == '__main__':
-    while True:
-        try:
-            Rodar_bot()
-        except:
-            pass
+    # while True:
+    #     try:
+    #         Rodar_bot()
+    #     except:
+    #         pass
+    Rodar_bot()
