@@ -16,8 +16,8 @@ import json
 import scrapping_programacao as sp
 from last import get_top_tracks
 
-
-while True:
+i = 0
+while i < 6:
 
     try:
         tracks = ''
@@ -317,9 +317,10 @@ Se deseja baixar algumas musicas de uma banda clique em /download_banda"""
         print('Tudo Perfeito ! Rodando !')
         bot.polling()
 
-    except:
+    except Exception as e:
 
-        print("Algo deu errado")
+        print("Algo deu errado: e")
+        i += 1
         # if __name__ == '__main__':
         #     # while True:
         #     #     try:
