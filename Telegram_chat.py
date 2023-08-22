@@ -10,16 +10,19 @@ import time
 from datetime import datetime
 import os
 from pytube import YouTube
+import openai
 
 import scrapping_programacao as sp
 from last import get_top_tracks
 
+
 while True:
-        
-    try :
+
+    try:
         tracks = ''
         filtro_musicas = ''
         filtro_banda = ''
+        openai.api_key = "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"
 
         id = '1790463787'
         file_path = file_path = os.path.join(os.getcwd(), 'teste.xlsx')
@@ -112,7 +115,7 @@ while True:
             orig = ["""['")(.,]""",
                     """[ -/]"""]
             new = ['',
-                    '_']
+                   '_']
             for o, n in zip(orig, new):
                 column = column.str.replace(o, n, regex=True)
             column = column.apply(lambda m: '/' + unidecode(m))
@@ -132,7 +135,7 @@ while True:
             stralign = 'left'       # Alinhar strings à esquerda
             # Gerar a tabela formatada
             table = tabulate(DF, headers=headers, showindex=showindex, colalign=colalign,
-                                numalign=numalign, stralign=stralign, tablefmt=tablefmt)
+                             numalign=numalign, stralign=stralign, tablefmt=tablefmt)
             return table
 
         filtro_canal = filtro_dia = ''
@@ -259,6 +262,24 @@ while True:
 
         # Resto
 
+        def check_gpt(message):
+            m = message.text.lower()
+            if 'gpt' in m and '=' in m:
+                return True
+
+        @bot.message_handler(func=check_gpt)
+        def gpt(message):
+            msg = 'o comando foi recebido, aguarde enquanto a resposta é gerada'
+            bot.send_message(message.chat.id, msg)
+
+            m = message.text.split('=')[-1].strip()
+            completion = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": m}]
+            )
+            msg = completion.choices[0].message.content
+            bot.send_message(message.chat.id, msg)
+
         @bot.message_handler(func=lambda m: True)
         def geral(message):
             f_name = message.from_user.first_name
@@ -290,8 +311,6 @@ while True:
     except:
 
         print("Algo deu errado")
-        
-
         # if __name__ == '__main__':
         #     # while True:
         #     #     try:
