@@ -319,7 +319,7 @@ Se deseja baixar algumas musicas de uma banda clique em /download_banda"""
 
     except Exception as e:
 
-        print("Algo deu errado: e")
+        print(f"Algo deu errado: {e}")
         i += 1
         # if __name__ == '__main__':
         #     # while True:
