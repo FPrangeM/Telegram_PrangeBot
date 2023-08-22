@@ -11,6 +11,7 @@ from datetime import datetime
 import os
 from pytube import YouTube
 import openai
+import json
 
 import scrapping_programacao as sp
 from last import get_top_tracks
@@ -22,13 +23,17 @@ while True:
         tracks = ''
         filtro_musicas = ''
         filtro_banda = ''
-        openai.api_key = "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"
+
+        with open('API_Keys.json', 'r') as f:
+            api_keys = json.load(f)
+
+        openai.api_key = api_keys['openai']
+        bot = telebot.TeleBot(api_keys['telebot'])
 
         id = '1790463787'
         file_path = file_path = os.path.join(os.getcwd(), 'teste.xlsx')
 
         A = pd.read_excel(file_path, index_col=0)
-        bot = telebot.TeleBot('6507938494:AAHABkuPOSweeatRqan2Iag19OHoHJseKQU')
 
         def check_musica(message):
             if message.text in filtro_musicas:
@@ -262,6 +267,11 @@ while True:
 
         # Resto
 
+        @bot.message_handler(commands=['chat_gpt'])
+        def gpt(message):
+            msg = 'Para receber a resposta do assistente ChatGPT-3.5 faça sua pergunta com o comando "gpt = [pergunta]'
+            bot.send_message(message.chat.id, msg)
+
         def check_gpt(message):
             m = message.text.lower()
             if 'gpt' in m and '=' in m:
@@ -269,7 +279,7 @@ while True:
 
         @bot.message_handler(func=check_gpt)
         def gpt(message):
-            msg = 'o comando foi recebido, aguarde enquanto a resposta é gerada'
+            msg = 'pergunta recebida, aguarde...'
             bot.send_message(message.chat.id, msg)
 
             m = message.text.split('=')[-1].strip()
@@ -289,19 +299,18 @@ while True:
         # 3) Se deseja baixar algumas musicas de uma banda clique em /download_banda
         # """
 
-            msg = f"""Perfeito, vamos lá {message.from_user.first_name} !!!
+            msg = f"""
+Perfeito, vamos lá {message.from_user.first_name} !!!
 
-        Programação de canais de esportes:
+Assistente ChatGPT 3.5:
+Se deseja ativar uma pergunta ao chat gpt digite '/chat_gpt'
 
-        1) Se deseja saber a programação de um canal específico clique em /busca_por_canal
+Programação de canais de esportes:
+1) Se deseja saber a programação de um canal específico clique em /busca_por_canal
+2) Se deseja fazer a busca livre pelo nome do programa clique em /busca_por_nome
 
-        2) Se deseja fazer a busca livre pelo nome do programa clique em /busca_por_nome
-
-        ————————————————-
-
-        Músicas:
-
-        Se deseja baixar algumas musicas de uma banda clique em /download_banda"""
+Músicas:
+Se deseja baixar algumas musicas de uma banda clique em /download_banda"""
 
             bot.send_message(message.chat.id, msg)
 

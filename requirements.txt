@@ -1,7 +1,8 @@
 beautifulsoup4==4.11.1
+openai==0.27.8
 pandas==1.5.2
 pyTelegramBotAPI==4.12.0
-pyTelegramBotAPI==4.12.0
+pyTelegramBotAPI==4.13.0
 python-telegram-bot==20.4
 pytube==15.0.0
 Requests==2.31.0
