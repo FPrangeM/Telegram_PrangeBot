@@ -303,7 +303,7 @@ while i < 6:
 Perfeito, vamos lá {message.from_user.first_name} !!!
 
 Assistente ChatGPT 3.5:
-Se deseja ativar uma pergunta ao chat gpt digite '/chat_gpt'
+Se deseja ativar uma pergunta ao chat gpt clique em /chat_gpt
 
 Programação de canais de esportes:
 1) Se deseja saber a programação de um canal específico clique em /busca_por_canal
